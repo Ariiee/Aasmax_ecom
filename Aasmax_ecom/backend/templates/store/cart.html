@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="px-4 px-md-5 py-4">
+  <div class="d-flex justify-content-between align-items-end flex-wrap gap-3">
+    <div>
+      <div class="eyebrow">Cart</div>
+      <h1 class="h2 fw-bold mb-0">Your cart</h1>
+    </div>
+    <a href="/checkout" class="btn btn-primary">Proceed to checkout</a>
+  </div>
+
+  <div class="row g-4 mt-1">
+    <div class="col-lg-8">
+      <div class="card-glass p-4">
+        {% if items %}
+          {% for item in items %}
+          <div class="cart-item py-3 border-bottom border-secondary d-flex gap-3 align-items-center">
+            <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}" style="width:92px;height:92px;object-fit:cover;border-radius:20px;">
+            <div class="flex-grow-1">
+              <div class="fw-semibold">{{ item.product.name }}</div>
+              <div class="text-secondary small">{{ item.product.category.name }}</div>
+              <div class="d-flex align-items-center gap-2 mt-2 flex-wrap">
+                <button type="button" class="btn btn-sm btn-outline-light js-qty-btn" data-item-id="{{ item.id }}" data-delta="-1">−</button>
+                <input type="number" min="1" value="{{ item.quantity }}" class="form-control form-dark quantity-pill text-center" style="width:90px;" data-qty-input="{{ item.id }}">
+                <button type="button" class="btn btn-sm btn-outline-light js-qty-btn" data-item-id="{{ item.id }}" data-delta="1">+</button>
+                <button type="button" class="btn btn-sm btn-outline-danger js-remove-cart-item" data-item-id="{{ item.id }}" onclick="document.querySelector('[data-qty-input='{{ item.id }}']').value = 1;">Remove</button>
+              </div>
+            </div>
+            <div class="text-end">
+              <div class="fw-bold">₹{{ "%.2f"|format(item.quantity * item.product.price) }}</div>
+              <div class="small text-secondary">₹{{ "%.2f"|format(item.product.price) }} each</div>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div class="text-center py-5">
+            <h2 class="h4">Your cart is empty</h2>
+            <p class="text-secondary mb-4">Add products to continue to checkout.</p>
+            <a href="/products" class="btn btn-primary">Shop now</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card-glass p-4 sticky-top" style="top: 92px;">
+        <h2 class="h5 fw-bold">Order summary</h2>
+        <div class="d-flex justify-content-between mt-3"><span>Subtotal</span><strong>₹{{ "%.2f"|format(subtotal) }}</strong></div>
+        <div class="d-flex justify-content-between mt-2"><span>Shipping</span><strong>₹{{ "%.2f"|format(shipping_fee) }}</strong></div>
+        <div class="d-flex justify-content-between mt-2"><span>Tax</span><strong>₹{{ "%.2f"|format(tax) }}</strong></div>
+        <hr class="border-secondary my-3">
+        <div class="d-flex justify-content-between"><span class="fw-semibold">Total</span><strong>₹{{ "%.2f"|format(total) }}</strong></div>
+        <a href="/checkout" class="btn btn-primary w-100 mt-4 {% if not items %}disabled{% endif %}">Place Order</a>
+        <p class="small text-secondary mt-3 mb-0">You can review your address and payment method on the checkout page.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

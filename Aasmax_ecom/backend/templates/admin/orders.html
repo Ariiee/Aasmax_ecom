@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="px-4 px-md-5 py-4">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+      <div class="eyebrow">Orders</div>
+      <h1 class="h2 fw-bold mb-0">Order management</h1>
+    </div>
+    <a href="/admin" class="btn btn-outline-light rounded-pill">Back</a>
+  </div>
+
+  <div class="card-glass p-4 mt-3">
+    {% for order in orders %}
+    <div class="py-3 border-bottom border-secondary">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+          <div class="fw-semibold">{{ order.order_number }}</div>
+          <div class="text-secondary small">₹{{ "%.2f"|format(order.total) }} • {{ order.payment_status }} • {{ order.user.name }}</div>
+        </div>
+        <form method="post" action="/admin/orders/{{ order.id }}/status" class="d-flex gap-2 flex-wrap">
+          <select class="form-select form-dark form-select-sm" name="status">
+            {% for s in ['pending','confirmed','shipped','delivered','cancelled'] %}
+              <option value="{{ s }}" {% if order.status == s %}selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+          </select>
+          <button class="btn btn-sm btn-primary">Update</button>
+        </form>
+      </div>
+    </div>
+    {% else %}
+      <p class="text-secondary mb-0">No orders found.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

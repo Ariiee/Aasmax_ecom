@@ -1,0 +1,30 @@
+openapi: 3.0.3
+info:
+  title: E-Commerce SaaS API
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:5000
+paths:
+  /api/login:
+    post:
+      summary: Login and receive JWT tokens
+  /api/register:
+    post:
+      summary: Register a new user
+  /api/products:
+    get:
+      summary: List products
+    post:
+      summary: Create a product
+  /api/cart/items:
+    post:
+      summary: Add item to cart
+  /api/orders/checkout:
+    post:
+      summary: Create order from cart
+  /api/payments/mock-initiate:
+    post:
+      summary: Start mock payment
+  /api/payments/mock-confirm:
+    post:
+      summary: Confirm mock payment

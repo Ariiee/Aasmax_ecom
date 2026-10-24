@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="px-4 px-md-5 py-4">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+      <div class="eyebrow">Admin dashboard</div>
+      <h1 class="h2 fw-bold mb-0">Commerce overview</h1>
+    </div>
+    <form method="post" action="/admin/logout">
+      <button class="btn btn-outline-danger">Logout</button>
+    </form>
+  </div>
+
+  <div class="row g-3 mt-1">
+    <div class="col-md-3"><div class="metric-card card-glass"><span>Revenue</span><strong>₹{{ "%.2f"|format(total_revenue) }}</strong></div></div>
+    <div class="col-md-3"><div class="metric-card card-glass"><span>Orders</span><strong>{{ total_orders }}</strong></div></div>
+    <div class="col-md-3"><div class="metric-card card-glass"><span>Users</span><strong>{{ total_users }}</strong></div></div>
+    <div class="col-md-3"><div class="metric-card card-glass"><span>Products</span><strong>{{ products }}</strong></div></div>
+  </div>
+
+  <div class="row g-3 mt-3">
+    <div class="col-lg-7">
+      <div class="card-glass p-4 h-100">
+        <h2 class="h5 fw-bold mb-3">Orders by status</h2>
+        <canvas id="statusChart" height="180"></canvas>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card-glass p-4 h-100">
+        <h2 class="h5 fw-bold mb-3">Recent orders</h2>
+        {% for order in recent_orders %}
+          <div class="d-flex justify-content-between py-2 border-bottom border-secondary">
+            <span>{{ order.order_number }}</span>
+            <span class="text-secondary">{{ order.status }}</span>
+          </div>
+        {% else %}
+          <p class="text-secondary mb-0">No orders yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-3">
+    <div class="col-md-3"><a class="admin-nav card-glass p-4 h-100" href="/admin/products">Product Management</a></div>
+    <div class="col-md-3"><a class="admin-nav card-glass p-4 h-100" href="/admin/orders">Order Management</a></div>
+    <div class="col-md-3"><a class="admin-nav card-glass p-4 h-100" href="/admin/users">User Management</a></div>
+    <div class="col-md-3"><a class="admin-nav card-glass p-4 h-100" href="/admin/content">Content Management</a></div>
+  </div>
+</section>
+
+<script>
+const labels = {{ sales_by_status | map(attribute=0) | list | tojson }};
+const values = {{ sales_by_status | map(attribute=1) | list | tojson }};
+new Chart(document.getElementById('statusChart'), {
+  type: 'doughnut',
+  data: { labels, datasets: [{ data: values }] },
+  options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+});
+</script>
+{% endblock %}

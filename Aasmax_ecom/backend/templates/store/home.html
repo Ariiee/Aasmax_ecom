@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="px-4 px-md-5 py-5">
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <div class="eyebrow">Premium commerce OS</div>
+      <h1 class="display-4 fw-bold lh-sm">AasmaX for modern eCommerce teams.</h1>
+      <p class="lead text-secondary mt-3">A polished, modular storefront with checkout, order tracking, wishlist tools, and an admin workspace inside one Flask monorepo.</p>
+      <div class="d-flex gap-3 mt-4 flex-wrap">
+        <a href="/products" class="btn btn-primary btn-lg">Explore products</a>
+        <a href="/checkout" class="btn btn-outline-light btn-lg">Go to checkout</a>
+      </div>
+      <div class="d-flex gap-2 mt-4 flex-wrap">
+        <span class="step-pill active">Search</span>
+        <span class="step-pill active">Cart</span>
+        <span class="step-pill active">Address</span>
+        <span class="step-pill active">Payment</span>
+        <span class="step-pill active">Place Order</span>
+      </div>
+    </div>
+    <div class="hero-panel card-glass p-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-secondary">Store snapshot</span>
+        <span class="badge text-bg-success">Live</span>
+      </div>
+      <div class="mini-stats">
+        <div><strong>{{ products|length }}</strong><span>Products</span></div>
+        <div><strong>{{ categories|length }}</strong><span>Categories</span></div>
+        <div><strong>{{ featured|length }}</strong><span>Featured</span></div>
+      </div>
+      <div class="mt-4">
+        <canvas id="homeChart" height="180"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="px-4 px-md-5 pb-4">
+  <div class="d-flex align-items-end justify-content-between mb-3 flex-wrap gap-2">
+    <div>
+      <div class="eyebrow">Featured banners</div>
+      <h2 class="h3 fw-bold mb-0">Homepage sections</h2>
+    </div>
+  </div>
+  <div class="row g-3">
+    {% for banner in banners %}
+    <div class="col-md-6">
+      <div class="banner-card card-glass overflow-hidden h-100">
+        <div class="banner-image" style="background-image:url('{{ banner.image_url }}')"></div>
+        <div class="p-4">
+          <h3 class="h4 fw-bold">{{ banner.title }}</h3>
+          <p class="text-secondary">{{ banner.subtitle }}</p>
+          {% if banner.cta_link %}
+          <a href="{{ banner.cta_link }}" class="btn btn-sm btn-outline-light">{{ banner.cta_text or 'View' }}</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="px-4 px-md-5 py-4">
+  <div class="d-flex align-items-end justify-content-between mb-3 flex-wrap gap-2">
+    <div>
+      <div class="eyebrow">Featured products</div>
+      <h2 class="h3 fw-bold mb-0">Built for modern storefronts</h2>
+    </div>
+    <a href="/products" class="link-light">View all</a>
+  </div>
+  <div class="row g-3">
+    {% for product in featured %}
+    <div class="col-sm-6 col-lg-3">
+      <a class="product-card card-glass h-100" href="/product/{{ product.slug }}">
+        <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-image">
+        <div class="p-3">
+          <div class="small text-secondary">{{ product.category.name }}</div>
+          <h3 class="h6 fw-semibold mb-1">{{ product.name }}</h3>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="fw-bold">₹{{ "%.2f"|format(product.price) }}</span>
+            <span class="btn btn-sm btn-outline-light">Details</span>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<script>
+const ctx = document.getElementById('homeChart');
+if (ctx) {
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+      datasets: [{ label: 'Revenue', data: [120, 180, 160, 260, 240, 300, 420], tension: 0.35 }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      responsive: true,
+      scales: { x: { grid: { display: false } }, y: { grid: { color: 'rgba(255,255,255,.08)' } } }
+    }
+  });
+}
+</script>
+{% endblock %}

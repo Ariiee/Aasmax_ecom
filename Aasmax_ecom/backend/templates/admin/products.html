@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="px-4 px-md-5 py-4">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+      <div class="eyebrow">Catalog</div>
+      <h1 class="h2 fw-bold mb-0">Products</h1>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+      <a href="/admin/products/new" class="btn btn-primary">Add product</a>
+      <a href="/admin" class="btn btn-outline-light">Back</a>
+    </div>
+  </div>
+
+  <div class="row g-4 mt-1">
+    <div class="col-lg-12">
+      <div class="card-glass p-4">
+        <h2 class="h5 fw-bold">Existing products</h2>
+        {% for product in products %}
+        <div class="surface p-3 mb-3">
+          <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+            <div class="d-flex gap-3 align-items-center">
+              <img src="{{ product.image_url }}" alt="{{ product.name }}" style="width:72px;height:72px;object-fit:cover;border-radius:18px;">
+              <div>
+                <div class="fw-semibold">{{ product.name }}</div>
+                <div class="text-secondary small">{{ product.category.name }} • Stock {{ product.stock }} • ₹{{ "%.2f"|format(product.price) }}</div>
+              </div>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+              <a class="btn btn-sm btn-outline-light" href="/admin/products/{{ product.id }}/edit">Edit</a>
+              <form method="post" action="/admin/products/{{ product.id }}/delete">
+                <button class="btn btn-sm btn-outline-danger">Delete</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% else %}
+          <p class="text-secondary mb-0">No products found.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

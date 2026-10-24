@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="px-4 px-md-5 py-4">
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <div class="card-glass p-4 mb-4">
+        <div class="eyebrow">Profile</div>
+        <h1 class="h3 fw-bold">{{ user.name }}</h1>
+        <p class="text-secondary mb-3">{{ user.email }}</p>
+        <form class="vstack gap-2" method="post" action="#" onsubmit="return false;" id="profileForm">
+          <input class="form-control form-dark" name="name" value="{{ user.name }}" placeholder="Full name">
+          <input class="form-control form-dark" name="email" value="{{ user.email }}" placeholder="Email">
+          <button class="btn btn-primary" type="button" data-save-profile>Save profile</button>
+        </form>
+      </div>
+      <div class="card-glass p-4">
+        <div class="eyebrow">Wishlist</div>
+        <h2 class="h5 fw-bold">Saved products</h2>
+        {% for item in wishlist %}
+          <div class="wishlist-item py-3 border-bottom border-secondary d-flex justify-content-between gap-2 align-items-center">
+            <div>
+              <div class="fw-semibold">{{ item.product.name }}</div>
+              <div class="text-secondary small">₹{{ "%.2f"|format(item.product.price) }}</div>
+            </div>
+            <div class="d-flex gap-2 flex-wrap justify-content-end">
+              <button type="button" class="btn btn-sm btn-outline-light js-move-to-cart" data-product-id="{{ item.product.id }}">Move</button>
+              <button type="button" class="btn btn-sm btn-outline-danger js-remove-wishlist" data-product-id="{{ item.product.id }}">Remove</button>
+            </div>
+          </div>
+        {% else %}
+          <p class="text-secondary mb-0">No wishlist items yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="card-glass p-4 mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+          <div>
+            <div class="eyebrow">Addresses</div>
+            <h2 class="h5 fw-bold mb-0">Shipping addresses</h2>
+          </div>
+          <span class="badge badge-soft">{{ addresses|length }} saved</span>
+        </div>
+        {% for a in addresses %}
+          <div class="surface p-3 mb-3">
+            <div class="d-flex justify-content-between align-items-start gap-2">
+              <div>
+                <div class="fw-semibold">{{ a.label }} {% if a.is_default %}<span class="badge badge-soft ms-1">Default</span>{% endif %}</div>
+                <div class="text-secondary small">{{ a.line1 }}{% if a.line2 %}, {{ a.line2 }}{% endif %}, {{ a.city }}, {{ a.state }}, {{ a.postal_code }}, {{ a.country }}</div>
+              </div>
+              <button type="button" class="btn btn-sm btn-outline-danger js-remove-address" data-address-id="{{ a.id }}">Delete</button>
+            </div>
+          </div>
+        {% else %}
+          <p class="text-secondary">No saved addresses yet.</p>
+        {% endfor %}
+      </div>
+      <div class="card-glass p-4">
+        <div class="eyebrow">New address</div>
+        <h2 class="h5 fw-bold">Add shipping address</h2>
+        <form class="row g-2" id="addressForm">
+          <div class="col-md-6"><input class="form-control form-dark" name="label" placeholder="Label"></div>
+          <div class="col-md-6"><input class="form-control form-dark" name="line1" placeholder="Address line 1"></div>
+          <div class="col-md-6"><input class="form-control form-dark" name="line2" placeholder="Address line 2"></div>
+          <div class="col-md-6"><input class="form-control form-dark" name="city" placeholder="City"></div>
+          <div class="col-md-4"><input class="form-control form-dark" name="state" placeholder="State"></div>
+          <div class="col-md-4"><input class="form-control form-dark" name="postal_code" placeholder="Postal code"></div>
+          <div class="col-md-4"><input class="form-control form-dark" name="country" value="India" placeholder="Country"></div>
+          <div class="col-12 d-flex justify-content-between align-items-center mt-2">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="isDefault" name="is_default">
+              <label class="form-check-label" for="isDefault">Set as default</label>
+            </div>
+            <button class="btn btn-primary" type="button" data-save-address>Add address</button>
+          </div>
+        </form>
+      </div>
+      <div class="card-glass p-4 mt-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div>
+            <div class="eyebrow">Orders</div>
+            <h2 class="h5 fw-bold mb-0">Recent activity</h2>
+          </div>
+          <a href="/orders" class="btn btn-sm btn-outline-light">View orders</a>
+        </div>
+        <p class="text-secondary mb-0">Cart items: {{ cart_count }}. Order history is available from the Orders page.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

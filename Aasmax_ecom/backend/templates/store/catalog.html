@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="px-4 px-md-5 py-4">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+      <div class="eyebrow">Product catalog</div>
+      <h1 class="h2 fw-bold mb-0">Browse products</h1>
+    </div>
+    <form class="d-flex gap-2 flex-wrap" method="get">
+      <input class="form-control form-dark" name="q" value="{{ q }}" placeholder="Search products">
+      <select class="form-select form-dark" name="category">
+        <option value="">All categories</option>
+        {% for c in categories %}
+          <option value="{{ c.slug }}" {% if selected_category == c.slug %}selected{% endif %}>{{ c.name }}</option>
+        {% endfor %}
+      </select>
+      <button class="btn btn-primary">Search</button>
+    </form>
+  </div>
+  <div class="row g-3 mt-2">
+    {% for product in products %}
+    <div class="col-sm-6 col-lg-4 col-xl-3">
+      <a class="product-card card-glass h-100" href="/product/{{ product.slug }}">
+        <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-image">
+        <div class="p-3">
+          <div class="small text-secondary">{{ product.category.name }}</div>
+          <h3 class="h6 fw-semibold mb-1">{{ product.name }}</h3>
+          <p class="small text-secondary clamp-2">{{ product.description }}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="fw-bold">₹{{ "%.2f"|format(product.price) }}</span>
+            <span class="btn btn-sm btn-outline-light">Open</span>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

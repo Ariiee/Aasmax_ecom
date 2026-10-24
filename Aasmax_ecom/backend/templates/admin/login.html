@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-shell">
+  <div class="auth-card card-glass">
+    <div class="eyebrow">Admin access</div>
+    <h1 class="display-6 fw-bold">AasmaX Admin</h1>
+    {% if error %}<div class="alert alert-danger mt-3">{{ error }}</div>{% endif %}
+    <form method="post" action="/admin/login" class="vstack gap-3 mt-3">
+      <input class="form-control form-control-lg form-dark" name="email" type="email" placeholder="Admin email">
+      <input class="form-control form-control-lg form-dark" name="password" type="password" placeholder="Password">
+      <button class="btn btn-warning btn-lg fw-semibold">Sign in</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

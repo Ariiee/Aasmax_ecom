@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="px-4 px-md-5 py-4">
+  <div class="d-flex justify-content-between align-items-end flex-wrap gap-3">
+    <div>
+      <div class="eyebrow">Checkout</div>
+      <h1 class="h2 fw-bold mb-0">Complete your order</h1>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+      <span class="step-pill active">Cart</span>
+      <span class="step-pill active">Address</span>
+      <span class="step-pill active">Review</span>
+      <span class="step-pill active">Payment</span>
+      <span class="step-pill active">Place Order</span>
+    </div>
+  </div>
+
+  {% if error %}
+    <div class="alert alert-danger mt-3">{{ error }}</div>
+  {% endif %}
+
+  <form method="post" action="/checkout/place" class="row g-4 mt-1">
+    <div class="col-lg-7">
+      <div class="card-glass p-4 mb-4">
+        <h2 class="h5 fw-bold">Shipping address</h2>
+        {% if addresses %}
+          <div class="vstack gap-2">
+            {% for address in addresses %}
+            <label class="list-row p-3 border rounded-4">
+              <div class="d-flex justify-content-between align-items-start gap-3">
+                <div class="form-check mb-0">
+                  <input class="form-check-input" type="radio" name="address_id" value="{{ address.id }}" {% if address.is_default or loop.first %}checked{% endif %}>
+                  <div class="form-check-label ms-2">
+                    <div class="fw-semibold d-inline">{{ address.label }}</div>
+                    {% if address.is_default %}<span class="badge badge-soft ms-2">Default</span>{% endif %}
+                    <div class="text-secondary small">{{ address.line1 }}{% if address.line2 %}, {{ address.line2 }}{% endif %}, {{ address.city }}, {{ address.state }} - {{ address.postal_code }}</div>
+                  </div>
+                </div>
+              </div>
+            </label>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-secondary">No saved address yet. Add a shipping address below.</p>
+        {% endif %}
+        <div class="row g-2 mt-3">
+          <div class="col-md-6"><input class="form-control form-dark" name="address_label" placeholder="Label (Home, Office)"></div>
+          <div class="col-md-6"><input class="form-control form-dark" name="address_line1" placeholder="Address line 1"></div>
+          <div class="col-md-6"><input class="form-control form-dark" name="address_line2" placeholder="Address line 2"></div>
+          <div class="col-md-6"><input class="form-control form-dark" name="address_city" placeholder="City"></div>
+          <div class="col-md-4"><input class="form-control form-dark" name="address_state" placeholder="State"></div>
+          <div class="col-md-4"><input class="form-control form-dark" name="address_postal_code" placeholder="Postal code"></div>
+          <div class="col-md-4"><input class="form-control form-dark" name="address_country" value="India" placeholder="Country"></div>
+        </div>
+      </div>
+
+      <div class="card-glass p-4 mb-4">
+        <h2 class="h5 fw-bold">Payment</h2>
+        <div class="vstack gap-2">
+          <label class="list-row p-3 border rounded-4 d-flex justify-content-between align-items-center">
+            <span>Cash on delivery</span>
+            <input class="form-check-input" type="radio" name="payment_method" value="cod" checked>
+          </label>
+          <label class="list-row p-3 border rounded-4 d-flex justify-content-between align-items-center">
+            <span>Mock card payment</span>
+            <input class="form-check-input" type="radio" name="payment_method" value="mockpay">
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="card-glass p-4 sticky-top" style="top: 92px;">
+        <h2 class="h5 fw-bold">Order summary</h2>
+        {% for item in cart_items %}
+        <div class="d-flex justify-content-between py-2 border-bottom border-secondary">
+          <div>
+            <div class="fw-semibold">{{ item.product.name }}</div>
+            <div class="text-secondary small">Qty {{ item.quantity }}</div>
+          </div>
+          <strong>₹{{ "%.2f"|format(item.quantity * item.product.price) }}</strong>
+        </div>
+        {% endfor %}
+        <div class="d-flex justify-content-between mt-3"><span>Subtotal</span><strong>₹{{ "%.2f"|format(subtotal) }}</strong></div>
+        <div class="d-flex justify-content-between mt-2"><span>Shipping</span><strong>₹{{ "%.2f"|format(shipping_fee) }}</strong></div>
+        <div class="d-flex justify-content-between mt-2"><span>Tax</span><strong>₹{{ "%.2f"|format(tax) }}</strong></div>
+        <hr class="border-secondary my-3">
+        <div class="d-flex justify-content-between fs-5"><span class="fw-semibold">Total</span><strong>₹{{ "%.2f"|format(total) }}</strong></div>
+        <button class="btn btn-primary w-100 mt-4" type="submit">Place Order</button>
+        <p class="small text-secondary mt-3 mb-0">This will create the order, store it in the database, and clear your cart.</p>
+      </div>
+    </div>
+  </form>
+</section>
+{% endblock %}

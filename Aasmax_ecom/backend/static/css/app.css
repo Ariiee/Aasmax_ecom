@@ -1,0 +1,163 @@
+:root{
+  --bg:#070b14;
+  --panel:rgba(13,18,31,.72);
+  --panel-strong:rgba(16,22,38,.92);
+  --border:rgba(255,255,255,.08);
+  --text:#e5e7eb;
+  --muted:#9aa4b2;
+  --accent:#7c3aed;
+  --accent-2:#2563eb;
+}
+
+html[data-bs-theme="light"]{
+  --bg:#f4f7fb;
+  --panel:rgba(255,255,255,.88);
+  --panel-strong:rgba(255,255,255,.96);
+  --border:rgba(15,23,42,.08);
+  --text:#0f172a;
+  --muted:#475569;
+}
+
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top left, rgba(124,58,237,.14), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(37,99,235,.16), transparent 24%),
+    var(--bg);
+  color:var(--text);
+}
+
+.text-secondary,
+.small,
+footer,
+.text-muted{ color: var(--muted) !important; }
+
+.glass-nav,
+.card-glass,
+.metric-card,
+.admin-nav,
+.surface{
+  background: var(--panel);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 60px rgba(0,0,0,.22);
+}
+
+.card-glass,
+.metric-card,
+.admin-nav,
+.surface{ border-radius: 24px; }
+
+.navbar-brand{ letter-spacing: .02em; }
+
+.form-dark,
+.form-control,
+.form-select,
+textarea{
+  background: rgba(255,255,255,.04) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  color: var(--text) !important;
+}
+
+html[data-bs-theme="light"] .form-dark,
+html[data-bs-theme="light"] .form-control,
+html[data-bs-theme="light"] .form-select,
+html[data-bs-theme="light"] textarea{
+  background: rgba(255,255,255,.95) !important;
+  border-color: rgba(15,23,42,.10) !important;
+}
+
+.form-dark::placeholder,
+.form-control::placeholder,
+textarea::placeholder{ color: #94a3b8; }
+
+.btn{ border-radius: 999px; }
+.btn-primary{ background: linear-gradient(135deg, var(--accent), var(--accent-2)); border: none; }
+.btn-outline-light,
+.btn-outline-secondary{ border-color: rgba(255,255,255,.18); }
+
+.auth-shell{
+  min-height: calc(100vh - 130px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 2rem;
+}
+.auth-card{ width:min(560px, 100%); padding: 2rem; }
+
+.eyebrow{
+  text-transform: uppercase;
+  letter-spacing:.18em;
+  font-size:.72rem;
+  color:#93c5fd;
+  margin-bottom:.55rem;
+}
+
+.hero-grid{
+  display:grid;
+  grid-template-columns: 1.35fr .95fr;
+  gap: 1rem;
+}
+.hero-copy{ padding-right: 1rem; }
+.mini-stats{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .75rem;
+}
+.mini-stats div, .metric-card{
+  padding: 1rem;
+  border-radius: 18px;
+  background: rgba(255,255,255,.03);
+}
+.mini-stats strong, .metric-card strong{ display:block; font-size:1.5rem; }
+.mini-stats span, .metric-card span{ color:#94a3b8; font-size:.9rem; }
+
+.product-card, .banner-card, .admin-nav, .wishlist-item, .cart-item, .list-row{
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  display:block;
+  text-decoration:none;
+  color: inherit;
+}
+.product-card:hover, .banner-card:hover, .admin-nav:hover, .wishlist-item:hover, .cart-item:hover, .list-row:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 24px 60px rgba(0,0,0,.28);
+}
+.product-image{ width:100%; height:240px; object-fit:cover; }
+.detail-image{ width:100%; height:520px; object-fit:cover; }
+.banner-image{ height:200px; background-size:cover; background-position:center; }
+.clamp-2{ display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+
+.badge-soft{
+  background: rgba(124,58,237,.14);
+  color: #ddd6fe;
+  border: 1px solid rgba(124,58,237,.22);
+}
+
+.step-pill{
+  padding: .35rem .8rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.04);
+  font-size: .82rem;
+}
+.step-pill.active{ background: linear-gradient(135deg, rgba(124,58,237,.25), rgba(37,99,235,.24)); }
+.gallery-thumb{
+  width: 100px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 16px;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+.gallery-thumb.active{ border-color: #93c5fd; }
+
+.quantity-pill{
+  min-width: 2.25rem;
+  text-align: center;
+  border-radius: 999px;
+}
+
+@media (max-width: 992px){
+  .hero-grid{ grid-template-columns: 1fr; }
+  .hero-copy{ padding-right: 0; }
+}

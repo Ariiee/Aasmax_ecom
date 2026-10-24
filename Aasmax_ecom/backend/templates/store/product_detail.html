@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="px-4 px-md-5 py-4">
+  <div class="row g-4 align-items-start">
+    <div class="col-lg-6">
+      <div class="card-glass overflow-hidden p-3">
+        <img id="mainProductImage" src="{{ (product.gallery_images or [product.image_url])[0] }}" alt="{{ product.name }}" class="w-100 detail-image rounded-4">
+        <div class="d-flex gap-2 flex-wrap mt-3">
+          {% for image in (product.gallery_images or [product.image_url]) %}
+            <img src="{{ image }}" alt="{{ product.name }}" class="gallery-thumb {% if loop.first %}active{% endif %}" data-gallery-image>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="eyebrow">{{ product.category.name }}</div>
+      <h1 class="display-6 fw-bold">{{ product.name }}</h1>
+      <p class="text-secondary">{{ product.description }}</p>
+      <div class="d-flex gap-3 align-items-center mb-4 flex-wrap">
+        <span class="display-6 fw-bold">₹{{ "%.2f"|format(product.price) }}</span>
+        {% if product.compare_at_price %}
+          <span class="text-secondary text-decoration-line-through">₹{{ "%.2f"|format(product.compare_at_price) }}</span>
+        {% endif %}
+        <span class="badge badge-soft">{{ product.stock }} in stock</span>
+      </div>
+
+      <div class="card-glass p-4 mb-3">
+        <div class="d-flex justify-content-between">
+          <span>Featured</span><strong>{{ "Yes" if product.featured else "No" }}</strong>
+        </div>
+        <div class="d-flex justify-content-between mt-2">
+          <span>Product ID</span><strong>#{{ product.id }}</strong>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 flex-wrap">
+        <button type="button" class="btn btn-primary js-add-to-cart" data-product-id="{{ product.id }}" data-product-name="{{ product.name|e }}">Add to cart</button>
+        <button type="button" class="btn btn-outline-light js-add-to-wishlist" data-product-id="{{ product.id }}" data-product-name="{{ product.name|e }}">Wishlist</button>
+      </div>
+
+      <div class="mt-3 small text-secondary">Tip: use the wishlist to save items and move them to cart later.</div>
+    </div>
+  </div>
+</section>
+<script>
+document.querySelectorAll('[data-gallery-image]').forEach((thumb) => {
+  thumb.addEventListener('click', () => {
+    document.getElementById('mainProductImage').src = thumb.src;
+    document.querySelectorAll('[data-gallery-image]').forEach((img) => img.classList.remove('active'));
+    thumb.classList.add('active');
+  });
+});
+</script>
+{% endblock %}

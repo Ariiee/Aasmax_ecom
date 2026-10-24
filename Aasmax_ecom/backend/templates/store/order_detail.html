@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="px-4 px-md-5 py-4">
+  <div class="d-flex justify-content-between align-items-end flex-wrap gap-2 mb-3">
+    <div>
+      <div class="eyebrow">Order detail</div>
+      <h1 class="h3 fw-bold mb-0">{{ order.order_number }}</h1>
+    </div>
+    <a href="/orders" class="btn btn-outline-light">Back to orders</a>
+  </div>
+  <div class="card-glass p-4">
+    <div class="d-flex flex-wrap gap-2 mb-3">
+      <span class="badge text-bg-info">{{ order.status }}</span>
+      <span class="badge badge-soft">Payment: {{ order.payment_status }}</span>
+      <span class="badge badge-soft">Method: {{ order.payment_method }}</span>
+    </div>
+    <p class="text-secondary">Ordered on {{ order.created_at.strftime('%d %b %Y, %I:%M %p') if order.created_at else '' }}</p>
+    {% if order.address_snapshot %}
+      <div class="surface p-3 mb-3">
+        <div class="fw-semibold mb-1">Shipping address</div>
+        <div class="text-secondary small">
+          {{ order.address_snapshot.label }}, {{ order.address_snapshot.line1 }}{% if order.address_snapshot.line2 %}, {{ order.address_snapshot.line2 }}{% endif %}, {{ order.address_snapshot.city }}, {{ order.address_snapshot.state }} - {{ order.address_snapshot.postal_code }}, {{ order.address_snapshot.country }}
+        </div>
+      </div>
+    {% endif %}
+    {% for item in order.items %}
+      <div class="d-flex justify-content-between py-2 border-bottom border-secondary">
+        <span>{{ item.product_name }} × {{ item.quantity }}</span>
+        <strong>₹{{ "%.2f"|format(item.unit_price * item.quantity) }}</strong>
+      </div>
+    {% endfor %}
+    <hr class="border-secondary">
+    <div class="d-flex justify-content-between"><span>Subtotal</span><strong>₹{{ "%.2f"|format(order.subtotal) }}</strong></div>
+    <div class="d-flex justify-content-between mt-2"><span>Shipping</span><strong>₹{{ "%.2f"|format(order.shipping_fee) }}</strong></div>
+    <div class="d-flex justify-content-between mt-2"><span>Tax</span><strong>₹{{ "%.2f"|format(order.tax) }}</strong></div>
+    <div class="d-flex justify-content-between mt-2 fs-5"><span>Total</span><strong>₹{{ "%.2f"|format(order.total) }}</strong></div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="px-4 px-md-5 py-4">
+  <div class="eyebrow">Orders</div>
+  <h1 class="h2 fw-bold">Order history</h1>
+  <div class="row g-3 mt-2">
+    {% for order in orders %}
+    <div class="col-lg-6">
+      <a href="/orders/{{ order.id }}" class="card-glass p-4 h-100 text-decoration-none d-block">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="fw-bold">{{ order.order_number }}</div>
+            <div class="text-secondary small">{{ order.created_at.strftime('%d %b %Y') }}</div>
+          </div>
+          <span class="badge text-bg-info">{{ order.status }}</span>
+        </div>
+        <hr class="border-secondary">
+        <div class="d-flex justify-content-between">
+          <span>Total</span><strong>₹{{ "%.2f"|format(order.total) }}</strong>
+        </div>
+      </a>
+    </div>
+    {% else %}
+    <div class="col-12">
+      <div class="card-glass p-4 text-center">
+        <h2 class="h4">No orders yet</h2>
+        <p class="text-secondary mb-0">Once you place an order, it will appear here with live status tracking.</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

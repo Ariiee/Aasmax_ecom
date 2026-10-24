@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-shell">
+  <div class="auth-card card-glass">
+    <div class="mb-4">
+      <div class="eyebrow">Start shopping</div>
+      <h1 class="display-6 fw-bold">Create account</h1>
+      <p class="text-secondary">Join AasmaX in seconds.</p>
+    </div>
+    <form method="post" action="/register" class="vstack gap-3">
+      <input class="form-control form-control-lg form-dark" name="name" placeholder="Full name">
+      <input class="form-control form-control-lg form-dark" name="email" type="email" placeholder="Email">
+      <input class="form-control form-control-lg form-dark" name="password" type="password" placeholder="Password">
+      <input class="form-control form-control-lg form-dark" name="confirm_password" type="password" placeholder="Confirm password">
+      <button class="btn btn-primary btn-lg">Create account</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

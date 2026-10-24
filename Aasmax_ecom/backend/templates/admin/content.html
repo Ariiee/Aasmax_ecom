@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="px-4 px-md-5 py-4">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+      <div class="eyebrow">CMS</div>
+      <h1 class="h2 fw-bold mb-0">Content management</h1>
+    </div>
+    <a href="/admin" class="btn btn-outline-light rounded-pill">Back</a>
+  </div>
+
+  <div class="row g-4 mt-1">
+    <div class="col-lg-4">
+      <div class="card-glass p-4">
+        <h2 class="h5 fw-bold">Add banner</h2>
+        <form method="post" action="/admin/banners" class="vstack gap-2">
+          <input class="form-control form-dark" name="title" placeholder="Title">
+          <input class="form-control form-dark" name="subtitle" placeholder="Subtitle">
+          <input class="form-control form-dark" name="image_url" placeholder="Image URL">
+          <input class="form-control form-dark" name="cta_text" placeholder="CTA text">
+          <input class="form-control form-dark" name="cta_link" placeholder="CTA link">
+          <input class="form-control form-dark" name="sort_order" placeholder="Sort order">
+          <button class="btn btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="card-glass p-4">
+        <h2 class="h5 fw-bold">Homepage banners</h2>
+        {% for banner in banners %}
+          <div class="py-3 border-bottom border-secondary">
+            <div class="fw-semibold">{{ banner.title }}</div>
+            <div class="text-secondary small">{{ banner.subtitle }}</div>
+          </div>
+        {% else %}
+          <p class="text-secondary mb-0">No banners found.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

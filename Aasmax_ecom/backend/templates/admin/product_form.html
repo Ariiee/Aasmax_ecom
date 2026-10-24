@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="px-4 px-md-5 py-4">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+      <div class="eyebrow">Catalog</div>
+      <h1 class="h2 fw-bold mb-0">{{ 'Edit product' if product else 'Add product' }}</h1>
+    </div>
+    <a href="/admin/products" class="btn btn-outline-light">Back</a>
+  </div>
+
+  <div class="row g-4 mt-1">
+    <div class="col-lg-8">
+      <div class="card-glass p-4">
+        <form method="post" action="{{ '/admin/products/%s/edit'|format(product.id) if product else '/admin/products' }}" class="row g-3">
+          <div class="col-md-6"><input class="form-control form-dark" name="name" value="{{ product.name if product else '' }}" placeholder="Product name"></div>
+          <div class="col-md-6"><input class="form-control form-dark" name="slug" value="{{ product.slug if product else '' }}" placeholder="Slug"></div>
+          <div class="col-12"><textarea class="form-control form-dark" name="description" rows="5" placeholder="Description">{{ product.description if product else '' }}</textarea></div>
+          <div class="col-md-4"><input class="form-control form-dark" name="price" value="{{ product.price if product else '' }}" placeholder="Price"></div>
+          <div class="col-md-4"><input class="form-control form-dark" name="compare_at_price" value="{{ product.compare_at_price if product and product.compare_at_price else '' }}" placeholder="Compare-at price"></div>
+          <div class="col-md-4"><input class="form-control form-dark" name="stock" value="{{ product.stock if product else '' }}" placeholder="Stock"></div>
+          <div class="col-md-6">
+            <select class="form-select form-dark" name="category_id">
+              {% for c in categories %}
+                <option value="{{ c.id }}" {% if product and product.category_id == c.id %}selected{% endif %}>{{ c.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6"><input class="form-control form-dark" name="image_url" value="{{ product.image_url if product and product.image_url else '' }}" placeholder="Image URL"></div>
+          <div class="col-12"><input class="form-control form-dark" name="gallery_images" value="{{ (product.gallery_images | join(', ')) if product and product.gallery_images else '' }}" placeholder="Gallery images (comma separated URLs)"></div>
+          <div class="col-12 form-check ps-4">
+            <input class="form-check-input" type="checkbox" name="featured" id="featured" {% if product and product.featured %}checked{% endif %}>
+            <label class="form-check-label" for="featured">Featured</label>
+          </div>
+          <div class="col-12 d-flex gap-2">
+            <button class="btn btn-primary" type="submit">{{ 'Update product' if product else 'Create product' }}</button>
+            <a class="btn btn-outline-light" href="/admin/products">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card-glass p-4">
+        <h2 class="h5 fw-bold">Tips</h2>
+        <p class="text-secondary mb-2">Use a clean slug for SEO.</p>
+        <p class="text-secondary mb-2">Keep image URLs square or landscape for better cards.</p>
+        <p class="text-secondary mb-0">Add gallery URLs separated by commas to power the product gallery.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
